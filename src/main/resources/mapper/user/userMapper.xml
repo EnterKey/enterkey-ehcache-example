@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="kr.enterkey.dao.UserDao">
+	<select id="selectProjectSeqByPrimaryKey" parameterType="string" resultType="int">
+		select
+			user_seq
+		from user
+		where name = #{userName}
+	</select>
+</mapper>
