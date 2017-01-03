@@ -111,12 +111,29 @@ private static final Logger logger = LoggerFactory.getLogger(LocalCacheHelper.cl
 		} else {
 			StringBuffer cacheKey = new StringBuffer();
 			for (int i = 0; i < objects.length; i++) {
-				if(objects[i] instanceof String[]) {
-					for (Object sectionKey : (String[])objects[i]) {
-						cacheKey.append( i==0 ? sectionKey : "," + sectionKey);
+				Class<?> ofParam = objects[i].getClass();
+				if (ofParam.isArray()) {
+					Class<?> ofArray = ofParam.getComponentType();
+					if (ofArray.isPrimitive()) {
+						for (int j=0; j<Array.getLength(objects[i]); j++) {
+							if (cacheKey.length() > 0) {
+								cacheKey.append(",");
+							}
+							cacheKey.append(Array.get(objects[i], j));
+						}
+					} else {
+						for (Object object : (Object[])objects[i]) {
+							if (cacheKey.length() > 0) {
+								cacheKey.append(",");
+							}
+							cacheKey.append(object);
+						}
 					}
 				} else {
-					cacheKey.append( i==0 ? objects[i] : "," + objects[i]);
+					if (cacheKey.length() > 0) {
+						cacheKey.append(",");
+					}
+					cacheKey.append(objects[i]);
 				}
 			}
 
